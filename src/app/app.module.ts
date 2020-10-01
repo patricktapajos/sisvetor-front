@@ -25,12 +25,19 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 
 import { ItemModule } from './item/item.module';
+import { SubItemModule } from './sub-item/subitem.module';
 import { ItemResolver } from './item/item.resolver';
 import {
   CreateItemDialog,
   ItemListComponent,
   UpdateItemDialog,
 } from './item/component/list/list.component';
+import {
+  CreateSubItemDialog,
+  SubItemListComponent,
+  UpdateSubItemDialog,
+} from './sub-item/component/list/list.component';
+import { SubItemResolver } from './sub-item/subitem.resolver';
 
 const routes: Routes = [
   {
@@ -40,12 +47,30 @@ const routes: Routes = [
       itens: ItemResolver,
     },
   },
+  {
+    path: 'subitens',
+    component: SubItemListComponent,
+    resolve: {
+      itens: SubItemResolver,
+    },
+  },
   // { path: '**', redirectTo: 'itens' },
 ];
 
 @NgModule({
-  declarations: [AppComponent, UpdateItemDialog, CreateItemDialog],
-  entryComponents: [UpdateItemDialog, CreateItemDialog],
+  declarations: [
+    AppComponent,
+    UpdateItemDialog,
+    CreateItemDialog,
+    CreateSubItemDialog,
+    UpdateSubItemDialog,
+  ],
+  entryComponents: [
+    UpdateItemDialog,
+    CreateItemDialog,
+    CreateSubItemDialog,
+    UpdateSubItemDialog,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -55,6 +80,7 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes),
     ItemModule,
+    SubItemModule,
     MatToolbarModule,
     MatCardModule,
     MatButtonModule,
@@ -72,7 +98,7 @@ const routes: Routes = [
     !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   exports: [RouterModule],
-  providers: [ItemResolver],
+  providers: [ItemResolver, SubItemResolver],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

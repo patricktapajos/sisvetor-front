@@ -1,0 +1,13 @@
+<div>
+  <h1 mat-dialog-title>Cadastrar</h1>
+  <div mat-dialog-content>
+    <mat-form-field [formGroup]="formSubItem">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="nome" />
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button (click)="create()" cdkFocusInitial>Cadastrar</button>
+  </div>
+</div>
