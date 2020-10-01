@@ -1,0 +1,63 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>Listar Itens</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table [dataSource]="itens$" class="mat-elevation-z8">
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let element">{{ element.nome }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            color="primary"
+            aria-label="Editar"
+            (click)="showUpdateForm(element)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="danger"
+            aria-label="Excluir"
+            (click)="deleteItem(element.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+    </table>
+
+    <div *ngIf="isUpdateActivated" style="margin-top: 50px; margin-left: 50px">
+      <h4>Atualizar</h4>
+      <form (ngSubmit)="updateItem(updateForm)" #updateForm="ngForm">
+        <div class="form-group">
+          <label for="name">Nome</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-control"
+            required
+            [(ngModel)]="itemToBeUpdated.nome"
+            style="width: 400px"
+          />
+        </div>
+        <button
+          [disabled]="updateForm.invalid"
+          class="btn btn-primary"
+          type="submit"
+        >
+          Atualizar
+        </button>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>
