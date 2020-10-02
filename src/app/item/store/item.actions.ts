@@ -5,22 +5,19 @@ import { Update } from '@ngrx/entity';
 export const loadItens = createAction('[Itens List] Load Itens via Service');
 
 export const itensLoaded = createAction(
-  '[Itens Effect] Itens Loaded Successfully',
+  'LOAD_ITENS_LOADED',
   props<{ itens: Item[] }>()
 );
 
-export const createItem = createAction(
-  '[Create Item Component] Create Item',
-  props<{ item: Item }>()
-);
+export const createItem = createAction('CREATE_ITEM', props<{ item: Item }>());
 
 export const deleteItem = createAction(
-  '[Itens List Operations] Delete Item',
+  'DELETE_ITEM',
   props<{ itemId: string }>()
 );
 
 export const updateItem = createAction(
-  '[Itens List Operations] Update Item',
+  'UPDATE_ITEM',
   props<{ update: Update<Item> }>()
 );
 

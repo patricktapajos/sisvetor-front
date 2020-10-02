@@ -1,4 +1,4 @@
-import { getAllItens } from '../../store/subitem.selectors';
+import { getAllSubItens } from '../../store/subitem.selectors';
 import { subItemActionTypes } from '../../store/subitem.actions';
 import { AppState } from '../../../store/reducers/index';
 import { Store } from '@ngrx/store';
@@ -38,7 +38,7 @@ export class SubItemListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.itens$ = this.store.select(getAllItens);
+    this.itens$ = this.store.select(getAllSubItens);
   }
 
   deleteSubItem(subItemId: string) {

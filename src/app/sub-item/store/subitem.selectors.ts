@@ -7,7 +7,7 @@ export const subitemFeatureSelector = createFeatureSelector<SubItemState>(
   'subitens'
 );
 
-export const getAllItens = createSelector(subitemFeatureSelector, selectAll);
+export const getAllSubItens = createSelector(subitemFeatureSelector, selectAll);
 
 export const areItensLoaded = createSelector(
   subitemFeatureSelector,

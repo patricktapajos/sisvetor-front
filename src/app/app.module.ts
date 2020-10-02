@@ -18,6 +18,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './store/reducers';
@@ -27,17 +28,17 @@ import { environment } from '../environments/environment';
 import { ItemModule } from './item/item.module';
 import { SubItemModule } from './sub-item/subitem.module';
 import { ItemResolver } from './item/item.resolver';
-import {
-  CreateItemDialog,
-  ItemListComponent,
-  UpdateItemDialog,
-} from './item/component/list/list.component';
+import { ItemListComponent } from './item/component/list/list.component';
 import {
   CreateSubItemDialog,
   SubItemListComponent,
   UpdateSubItemDialog,
 } from './sub-item/component/list/list.component';
 import { SubItemResolver } from './sub-item/subitem.resolver';
+import { ItemSubItemResolver } from './item-sub-item/itemsubitem.resolver';
+import { CreateItemDialog } from './item/component/create/create-item.component';
+import { UpdateItemDialog } from './item/component/update/update-item.component';
+import { ItemSubItemModule } from './item-sub-item/itemsubitem.module';
 
 const routes: Routes = [
   {
@@ -45,16 +46,16 @@ const routes: Routes = [
     component: ItemListComponent,
     resolve: {
       itens: ItemResolver,
+      itemsubitens: ItemSubItemResolver,
     },
   },
   {
     path: 'subitens',
     component: SubItemListComponent,
     resolve: {
-      itens: SubItemResolver,
+      subitens: SubItemResolver,
     },
   },
-  // { path: '**', redirectTo: 'itens' },
 ];
 
 @NgModule({
@@ -81,6 +82,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     ItemModule,
     SubItemModule,
+    ItemSubItemModule,
     MatToolbarModule,
     MatCardModule,
     MatButtonModule,
@@ -89,6 +91,7 @@ const routes: Routes = [
     MatTableModule,
     MatDialogModule,
     MatInputModule,
+    MatAutocompleteModule,
     EffectsModule.forRoot([]),
     StoreModule.forRoot(reducers, {
       metaReducers,
@@ -98,7 +101,7 @@ const routes: Routes = [
     !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   exports: [RouterModule],
-  providers: [ItemResolver, SubItemResolver],
+  providers: [ItemResolver, SubItemResolver, ItemSubItemResolver],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

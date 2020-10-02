@@ -15,7 +15,7 @@ export class ItemEffects {
     )
   );
 
-  createCourse$ = createEffect(
+  createItem$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(itemActionTypes.createItem),
@@ -25,7 +25,7 @@ export class ItemEffects {
     { dispatch: false }
   );
 
-  deleteCourse$ = createEffect(
+  deleteItem$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(itemActionTypes.deleteItem),
@@ -34,7 +34,7 @@ export class ItemEffects {
     { dispatch: false }
   );
 
-  updateCOurse$ = createEffect(
+  updateItem$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(itemActionTypes.updateItem),

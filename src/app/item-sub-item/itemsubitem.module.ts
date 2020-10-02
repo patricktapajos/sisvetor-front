@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { ItemService } from './services/item.service';
-import { ItemEffects } from './store/item.effects';
-import { itemReducer } from './store/item.reducers';
+import { ItemSubItemService } from './services/itemsubitem.service';
+import { ItemSubItemEffects } from './store/itemsubitem.effects';
+import { itemSubItemReducer } from './store/itemsubitem.reducers';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -16,10 +16,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
-import { ItemListComponent } from './component/list/list.component';
-
 @NgModule({
-  declarations: [ItemListComponent],
+  declarations: [],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -31,10 +29,9 @@ import { ItemListComponent } from './component/list/list.component';
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
-    StoreModule.forFeature('itens', itemReducer),
-    EffectsModule.forFeature([ItemEffects]),
+    StoreModule.forFeature('itemsubitens', itemSubItemReducer),
+    EffectsModule.forFeature([ItemSubItemEffects]),
   ],
-  providers: [ItemService],
-  exports: [ItemListComponent],
+  providers: [ItemSubItemService],
 })
-export class ItemModule {}
+export class ItemSubItemModule {}

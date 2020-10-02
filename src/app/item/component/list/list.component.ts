@@ -1,4 +1,5 @@
 import { getAllItens } from '../../store/item.selectors';
+import { getAllItemSubItens } from '../../../item-sub-item/store/itemsubitem.selectors';
 import { itemActionTypes } from '../../store/item.actions';
 import { AppState } from '../../../store/reducers/index';
 import { Store } from '@ngrx/store';
@@ -6,15 +7,13 @@ import { Observable } from 'rxjs';
 import { Item } from '../../model/item.model';
 import { ItemService } from '../../services/item.service';
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Update } from '@ngrx/entity';
-import { MatIconModule } from '@angular/material/icon';
-
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { ofType, Actions } from '@ngrx/effects';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateItemDialog } from '../create/create-item.component';
+import { UpdateItemDialog } from '../update/update-item.component';
+import { itemSubItemActionTypes } from 'src/app/item-sub-item/store/itemsubitem.actions';
+import { ItemSubItem } from 'src/app/item-sub-item/model/itemsubitem.model';
 
 @Component({
   selector: 'app-item-list',
@@ -27,6 +26,7 @@ export class ItemListComponent implements OnInit {
   itens$: Observable<Item[]>;
 
   itemToBeUpdated: Item;
+  subitens = null;
   itemCreated: Item;
 
   isUpdateActivated = false;
@@ -34,11 +34,34 @@ export class ItemListComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private itemService: ItemService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private actions$: Actions
   ) {}
 
   ngOnInit() {
+    this.loadItens();
+    //this.subscribeToItem();
+  }
+
+  loadItens() {
     this.itens$ = this.store.select(getAllItens);
+  }
+
+  subscribeToItem() {
+    this.actions$
+      .pipe(ofType(itemActionTypes.createItem))
+      .subscribe((action) => {
+        let itemsubitens: ItemSubItem[] = [];
+        const itemSubItem: ItemSubItem = {} as ItemSubItem;
+        this.subitens.forEach((element) => {
+          itemSubItem.item_id = action.item.id;
+          itemSubItem.sub_item_id = element.id;
+          itemsubitens.push(itemSubItem);
+        });
+        this.store.dispatch(
+          itemSubItemActionTypes.createItemSubItem({ itemsubitens })
+        );
+      });
   }
 
   deleteItem(itemId: string) {
@@ -73,9 +96,12 @@ export class ItemListComponent implements OnInit {
   }
 
   createItem() {
+    this.subitens = this.itemCreated.subitens;
+    delete this.itemCreated.subitens;
     const item: Item = this.itemCreated;
     this.store.dispatch(itemActionTypes.createItem({ item }));
     this.itemCreated = null;
+    itemActionTypes.loadItens();
   }
 
   updateItem() {
@@ -88,55 +114,5 @@ export class ItemListComponent implements OnInit {
 
     this.store.dispatch(itemActionTypes.updateItem({ update }));
     this.itemToBeUpdated = null;
-  }
-}
-
-@Component({
-  selector: 'update-item-dialog',
-  templateUrl: './update-item-dialog.html',
-})
-export class UpdateItemDialog {
-  formItem = new FormGroup({
-    nome: new FormControl(''),
-  });
-
-  constructor(
-    public dialogRef: MatDialogRef<UpdateItemDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: Item
-  ) {
-    this.formItem.get('nome').setValue(data.nome);
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  update() {
-    this.data.nome = this.formItem.get('nome').value;
-    this.dialogRef.close(this.data);
-  }
-}
-
-@Component({
-  selector: 'create-item-dialog',
-  templateUrl: './create-item-dialog.html',
-})
-export class CreateItemDialog {
-  formItem = new FormGroup({
-    nome: new FormControl(''),
-  });
-
-  constructor(
-    public dialogRef: MatDialogRef<CreateItemDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: Item
-  ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  create() {
-    this.data.nome = this.formItem.get('nome').value;
-    this.dialogRef.close(this.data);
   }
 }

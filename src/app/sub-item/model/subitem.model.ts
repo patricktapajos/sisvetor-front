@@ -1,4 +1,4 @@
 export interface SubItem {
-  id: string;
+  id: number;
   nome: string;
 }
